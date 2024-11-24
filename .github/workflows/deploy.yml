@@ -20,8 +20,8 @@ jobs:
 
       - name: Install pnpm
         run: |
-        npm install -g pnpm
-        pnpm --version
+          npm install -g pnpm
+          pnpm --version
 
       - name: Install dependencies
         run: pnpm install
