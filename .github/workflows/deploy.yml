@@ -33,5 +33,5 @@ jobs:
 
       - name: Run tests
         run: |
-        pnpm test
-        echo "Tests passed"
+          pnpm test
+          echo "Tests passed"
