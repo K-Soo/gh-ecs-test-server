@@ -15,12 +15,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.18.0
+          run: node --version
 
       - name: Cache pnpm store
         uses: actions/cache@v4
         with:
           path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Install pnpm
         run: |
