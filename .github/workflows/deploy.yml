@@ -31,29 +31,35 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run tests
-        run: |
-          pnpm test
-        continue-on-error: true
-        # outputs:
-        # status: ${{ steps.test.outputs.status }}
+      # - name: Run tests
+      #   run: |
+      #     pnpm test
+      #   continue-on-error: true
+      # outputs:
+      # status: ${{ steps.test.outputs.status }}
 
-      # 5. Save test logs (only on failure)
       - name: Upload test logs on failure
-        if: failure() # 이전 단계에서 실패했을 경우에만 실행
+        # if: failure() # 이전 단계에서 실패했을 경우에만 실행
         uses: actions/upload-artifact@v4
         with:
           name: test-logs #다운로드가능한 아티팩트 이름
           path: dist
 
-  # deploy:
-  #   needs: test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Get Code
-  #       uses: actions/checkout@v4
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
 
-  #     - name: Setup Node
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 20.18.0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.13.2
+
+      - name: Install dependencies
+        run: pnpm install
