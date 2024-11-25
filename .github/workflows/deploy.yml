@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - '.github/workflows/*'
+      - '.github/workflows/*' #워크플로우가 수정되면 액션이 실행안됨
 
 jobs:
   test:
@@ -35,6 +35,12 @@ jobs:
         run: |
           pnpm test
           echo "Tests passed"
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+
   # deploy:
   #   needs: test
   #   runs-on: ubuntu-latest
