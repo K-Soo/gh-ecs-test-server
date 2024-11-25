@@ -22,10 +22,9 @@ jobs:
           path: ~/.pnpm-store
           key: pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Install pnpm
-        run: |
-          npm install -g pnpm
-          pnpm --version
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.13.2
 
       - name: Install dependencies
         run: pnpm install
@@ -34,3 +33,14 @@ jobs:
         run: |
           pnpm test
           echo "Tests passed"
+  # deploy:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Get Code
+  #       uses: actions/checkout@v4
+
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20.18.0
