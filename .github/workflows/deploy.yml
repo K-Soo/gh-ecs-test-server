@@ -3,8 +3,8 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '.github/workflows/*' #워크플로우가 수정되면 액션이 실행안됨
+    # paths-ignore:
+    # - '.github/workflows/*' #워크플로우가 수정되면 액션이 실행안됨
 
 jobs:
   test:
