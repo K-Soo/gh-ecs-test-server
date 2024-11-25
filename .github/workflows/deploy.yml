@@ -57,6 +57,12 @@ jobs:
         with:
           node-version: 20.18.0
 
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store #지정된 디렉토리를 캐시합니다.
+          key: pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+
       - uses: pnpm/action-setup@v4
         with:
           version: 9.13.2
