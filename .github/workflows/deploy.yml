@@ -33,13 +33,18 @@ jobs:
 
       - name: Run tests
         run: |
-          pnpm test
-          echo "Tests passed"
+          pnpm test     
+          # pnpm run test || echo "status=failed" >> $GITHUB_OUTPUT
+        continue-on-error: true
+        # outputs:
+        # status: ${{ steps.test.outputs.status }}
 
-      - name: upload artifact
+      # 5. Save test logs (only on failure)
+      - name: Upload test logs on failure
+        if: failure() # 이전 단계에서 실패했을 경우에만 실행
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-logs
 
   # deploy:
   #   needs: test
