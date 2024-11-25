@@ -21,6 +21,14 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      # 4. Check PNPM installation path
+      - name: Debug PNPM installation path
+        run: |
+          echo "PNPM version:"
+          pnpm --version
+          echo "PNPM installation path:"
+          which pnpm
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
