@@ -33,8 +33,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pnpm test     
-          # pnpm run test || echo "status=failed" >> $GITHUB_OUTPUT
+          pnpm test
         continue-on-error: true
         # outputs:
         # status: ${{ steps.test.outputs.status }}
