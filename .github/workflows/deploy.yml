@@ -13,11 +13,6 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.18.0
-
       - name: Install pnpm
         run: npm install -g pnpm
 
@@ -58,11 +53,6 @@ jobs:
     steps:
       - name: Get Code
         uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.18.0
 
       - name: Install PNPM
         run: npm install -g pnpm
