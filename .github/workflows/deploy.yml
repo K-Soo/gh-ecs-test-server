@@ -18,14 +18,14 @@ jobs:
         with:
           node-version: 20.18.0
 
-      - name: Cache pnpm store
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Cache dependencies
         uses: actions/cache@v4
         with:
           path: ~/.pnpm-store #지정된 디렉토리를 캐시합니다.
           key: pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-      - name: Install PNPM
-        run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install
@@ -56,14 +56,14 @@ jobs:
         with:
           node-version: 20.18.0
 
-      - name: Cache pnpm store
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Cache dependencies
         uses: actions/cache@v4
         with:
           path: ~/.pnpm-store #지정된 디렉토리를 캐시합니다.
           key: pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-      - name: Install PNPM
-        run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install
