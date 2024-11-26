@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     outputs:
-      status: ${{ steps.test.outputs.status }} #ob 레벨에서 정의, Step 레벨에서는 정의가 불가능 outputs는 Job의 결과를 외부로 전달하기 위해 사용되며, Step 간에는 단순히 ${{ steps.<step_id>.<value> }} 형식으로 값을 공유할 수 있습니다.
+      status: ${{ steps.test.outputs.status }} #outputs는 Job의 결과를 외부로 전달하기 위해 사용되며, Step 간에는 단순히 ${{ steps.<step_id>.<value> }} 형식으로 값을 공유할 수 있습니다.
     steps:
       - name: Get Code
         uses: actions/checkout@v4
@@ -34,7 +34,6 @@ jobs:
         id: test
         run: |
           pnpm test
-          echo "status=N" >> $GITHUB_OUTPUT
 
         # continue-on-error: true
 
@@ -43,17 +42,18 @@ jobs:
         run: |
           echo "Step conclusion: ${{ steps.test.conclusion }}"
           echo "Step outcome: ${{ steps.test.outcome }}"
-          echo "status ${{ steps.test.outputs.status }}"
 
       - name: Upload test logs on failure
         if: failure() && steps.test.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
           name: test-logs #다운로드가능한 아티팩트 이름
-          path: dist
+          path: test
 
   deploy:
     needs: test
+    env:
+      URL: asdasd
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
