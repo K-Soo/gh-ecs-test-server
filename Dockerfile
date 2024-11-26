@@ -12,6 +12,6 @@ RUN pnpm install
 
 COPY . /app
 
-EXPOSE 8080
+EXPOSE 5500
 
 CMD ["npm", "run", "start:dev"]
