@@ -1,10 +1,12 @@
 name: ECS Deployment
+
 on:
   push:
     branches:
       - main
     # paths-ignore:
     # - '.github/workflows/*' #워크플로우가 수정되면 액션이 실행안됨
+
 env:
   AWS_REGION: MY_AWS_REGION # set this to your preferred AWS region, e.g. us-west-1
 
@@ -74,6 +76,7 @@ jobs:
         with:
           name: test-logs #다운로드가능한 아티팩트 이름
           path: test
+
   deploy:
     needs: test
     runs-on: ubuntu-latest
@@ -81,16 +84,16 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v4
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: ${{ env.AWS_REGION }}
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+    # - name: Login to Amazon ECR
+    #   id: login-ecr
+    #   uses: aws-actions/amazon-ecr-login@v1
 
     # - name: Build, tag, and push image to Amazon ECR
     #   id: build-image
