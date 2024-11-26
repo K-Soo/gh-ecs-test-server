@@ -83,11 +83,11 @@ jobs:
       - name: Debug task definition output
         run: echo ${{ steps.task-def.outputs.task-definition }}
 
-      # - name: Upload test logs on failure
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: update-task
-      #     path: ${{ steps.task-def.outputs.task-definition }}
+      - name: Upload test logs on failure
+        uses: actions/upload-artifact@v4
+        with:
+          name: update-task
+          path: ${{ steps.task-def.outputs.task-definition }}
 
       # - name: Deploy Amazon ECS task definition
       #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
