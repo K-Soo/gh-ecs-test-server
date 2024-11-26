@@ -30,7 +30,9 @@ jobs:
 
       - name: Run tests
         id: test
-        run: pnpm test
+        run: |
+          pnpm test
+          echo "status=N" >> $GITHUB_OUTPUT
         outputs:
           status: ${{ steps.test.outputs.status }}
         # continue-on-error: true
