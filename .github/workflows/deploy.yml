@@ -17,18 +17,18 @@ jobs:
       #   run: npm install -g pnpm
 
       # 4. Check PNPM installation path
-      - name: Debug PNPM installation path
-        run: |
-          echo "PNPM version:"
-          pnpm --version
-          echo "PNPM installation path:"
-          which pnpm
+      # - name: Debug PNPM installation path
+      #   run: |
+      #     echo "PNPM version:"
+      #     pnpm --version
+      #     echo "PNPM installation path:"
+      #     which pnpm
 
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
           path: ~/.npm #지정된 디렉토리를 캐시합니다.
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('package-lock.json') }}
 
       - name: Install dependencies
         run: npm ci
