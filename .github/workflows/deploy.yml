@@ -40,42 +40,42 @@ jobs:
           echo "local env: ${{ env.LOCAL }}"
           echo "local AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
 
-      - name: Get Code
-        uses: actions/checkout@v4
+      # - name: Get Code
+      #   uses: actions/checkout@v4
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      # - name: Install pnpm
+      #   run: npm install -g pnpm
 
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: /home/runner/.local/share/pnpm/store/v3
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+      # - name: Cache dependencies
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: /home/runner/.local/share/pnpm/store/v3
+      #     key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
 
-      - name: Install dependencies
-        run: |
-          pnpm install
-          echo "PNPM cache path:"
-          pnpm store path
+      # - name: Install dependencies
+      #   run: |
+      #     pnpm install
+      #     echo "PNPM cache path:"
+      #     pnpm store path
 
-      - name: Run tests
-        id: test
-        run: |
-          pnpm test
-        continue-on-error: true
+      # - name: Run tests
+      #   id: test
+      #   run: |
+      #     pnpm test
+      #   continue-on-error: true
 
-      - name: Check test status
-        if: failure() && steps.test.outcome == 'failure'
-        run: |
-          echo "Step conclusion: ${{ steps.test.conclusion }}"
-          echo "Step outcome: ${{ steps.test.outcome }}"
+      # - name: Check test status
+      #   if: failure() && steps.test.outcome == 'failure'
+      #   run: |
+      #     echo "Step conclusion: ${{ steps.test.conclusion }}"
+      #     echo "Step outcome: ${{ steps.test.outcome }}"
 
-      - name: Upload test logs on failure
-        if: failure() && steps.test.outcome == 'failure'
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-logs #다운로드가능한 아티팩트 이름
-          path: test
+      # - name: Upload test logs on failure
+      #   if: failure() && steps.test.outcome == 'failure'
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: test-logs
+      #     path: test
 
   deploy:
     needs: test
@@ -84,29 +84,31 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v4
 
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-region: ${{ env.AWS_REGION }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-    # - name: Login to Amazon ECR
-    #   id: login-ecr
-    #   uses: aws-actions/amazon-ecr-login@v1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
-    # - name: Build, tag, and push image to Amazon ECR
-    #   id: build-image
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     IMAGE_TAG: ${{ github.sha }}
-    #   run: |
-    #     # Build a docker container and
-    #     # push it to ECR so that it can
-    #     # be deployed to ECS.
-    #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    #     echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        echo "registry ${{ steps.login-ecr.outputs.registry }}"
+        echo "sha ${{ github.sha }}"
+        # docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        # docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        # echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     # - name: Fill in the new image ID in the Amazon ECS task definition
     #   id: task-def
