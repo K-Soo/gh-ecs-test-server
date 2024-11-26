@@ -56,24 +56,24 @@ jobs:
           echo "PNPM cache path:"
           pnpm store path
 
-      # - name: Run tests
-      #   id: test
-      #   run: |
-      #     pnpm test
-      #   continue-on-error: true
+      - name: Run tests
+        id: test
+        run: |
+          pnpm test
+        continue-on-error: true
 
-      # - name: Check test status
-      #   if: failure() && steps.test.outcome == 'failure'
-      #   run: |
-      #     echo "Step conclusion: ${{ steps.test.conclusion }}"
-      #     echo "Step outcome: ${{ steps.test.outcome }}"
+      - name: Check test status
+        if: failure() && steps.test.outcome == 'failure'
+        run: |
+          echo "Step conclusion: ${{ steps.test.conclusion }}"
+          echo "Step outcome: ${{ steps.test.outcome }}"
 
-      # - name: Upload test logs on failure
-      #   if: failure() && steps.test.outcome == 'failure'
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: test-logs #다운로드가능한 아티팩트 이름
-      #     path: test
+      - name: Upload test logs on failure
+        if: failure() && steps.test.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs #다운로드가능한 아티팩트 이름
+          path: test
 
   deploy:
     needs: test
