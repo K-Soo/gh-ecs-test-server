@@ -34,7 +34,7 @@ jobs:
         # continue-on-error: true
 
       - name: Check test status
-        if: failure() && steps.test.outcome == 'failure'
+        if: failure()
         run: |
           echo "Step conclusion: ${{ steps.test.conclusion }}"
           echo "Step outcome: ${{ steps.test.outcome }}"
