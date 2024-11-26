@@ -4,14 +4,16 @@ on:
   push:
     branches:
       - main
-    # paths-ignore:
-    # - '.github/workflows/*' #워크플로우가 수정되면 액션이 실행안됨
+    paths-ignore:
+      # - '.github/workflows/*'
+      - 'test/**'
+      - '**.md'
 
 env:
   ECS_SERVICE: MY_ECS_SERVICE # set this to your Amazon ECS service name
   ECS_CLUSTER: MY_ECS_CLUSTER # set this to your Amazon ECS cluster name
 
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION
+  ECS_TASK_DEFINITION: ./aws/task-definition/production.json
   CONTAINER_NAME: ecs-test-server
 
 permissions:
@@ -21,6 +23,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Get branch name
+        id: branch
+        run: |
+          echo "stage=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+          echo "branch name: ${{ steps.branch.outputs.stage }}"
+
       - name: Get Code
         uses: actions/checkout@v4
 
@@ -64,13 +72,13 @@ jobs:
 
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      # - name: Fill in the new image ID in the Amazon ECS task definition
-      #   id: task-def
-      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-      #   with:
-      #     task-definition: ${{ env.ECS_TASK_DEFINITION }}
-      #     container-name: ${{ env.CONTAINER_NAME }}
-      #     image: ${{ steps.build-image.outputs.image }}
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
 
       # - name: Deploy Amazon ECS task definition
       #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
