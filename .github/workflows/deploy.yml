@@ -10,8 +10,8 @@ on:
       - '**.md'
 
 env:
-  ECS_SERVICE: MY_ECS_SERVICE # set this to your Amazon ECS service name
-  ECS_CLUSTER: MY_ECS_CLUSTER # set this to your Amazon ECS cluster name
+  # ECS_SERVICE: MY_ECS_SERVICE # set this to your Amazon ECS service name
+  # ECS_CLUSTER: MY_ECS_CLUSTER # set this to your Amazon ECS cluster name
 
   ECS_TASK_DEFINITION: ./aws/task-definition/production.json
   CONTAINER_NAME: ecs-test-server
@@ -79,6 +79,15 @@ jobs:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
+
+      - name: Debug task definition output
+        run: echo ${{ steps.task-def.outputs.task-definition }}
+
+      # - name: Upload test logs on failure
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: update-task
+      #     path: ${{ steps.task-def.outputs.task-definition }}
 
       # - name: Deploy Amazon ECS task definition
       #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
