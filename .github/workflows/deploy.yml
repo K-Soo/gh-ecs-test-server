@@ -12,6 +12,7 @@ jobs:
   test:
     env:
       TEST_ENV: 테스트값이다
+      LOCAL: ${{ secrets.LOCAL }}
     runs-on: ubuntu-latest
     steps:
       - name: env output
