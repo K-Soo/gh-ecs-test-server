@@ -1,51 +1,51 @@
-jobs:
-  test:
-    env:
-      TEST_ENV: 테스트값이다
-      LOCAL: ${{ secrets.LOCAL }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: env output
-        run: |
-          echo "Global env: $GLOBAL_ENV"
-          echo "test env: ${{ env.TEST_ENV }}"
-          echo "test env: $TEST_ENV"
-          echo "local env: ${{ env.LOCAL }}"
-          echo "local AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
+# jobs:
+#   test:
+#     env:
+#       TEST_ENV: 테스트값이다
+#       LOCAL: ${{ secrets.LOCAL }}
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: env output
+#         run: |
+#           echo "Global env: $GLOBAL_ENV"
+#           echo "test env: ${{ env.TEST_ENV }}"
+#           echo "test env: $TEST_ENV"
+#           echo "local env: ${{ env.LOCAL }}"
+#           echo "local AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
 
-      - name: Get Code
-        uses: actions/checkout@v4
+#       - name: Get Code
+#         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+#       - name: Install pnpm
+#         run: npm install -g pnpm
 
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: /home/runner/.local/share/pnpm/store/v3
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+#       - name: Cache dependencies
+#         uses: actions/cache@v4
+#         with:
+#           path: /home/runner/.local/share/pnpm/store/v3
+#           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
 
-      - name: Install dependencies
-        run: |
-          pnpm install
-          echo "PNPM cache path:"
-          pnpm store path
+#       - name: Install dependencies
+#         run: |
+#           pnpm install
+#           echo "PNPM cache path:"
+#           pnpm store path
 
-      - name: Run tests
-        id: test
-        run: |
-          pnpm test
-        continue-on-error: true
+#       - name: Run tests
+#         id: test
+#         run: |
+#           pnpm test
+#         continue-on-error: true
 
-      - name: Check test status
-        if: failure() && steps.test.outcome == 'failure'
-        run: |
-          echo "Step conclusion: ${{ steps.test.conclusion }}"
-          echo "Step outcome: ${{ steps.test.outcome }}"
+#       - name: Check test status
+#         if: failure() && steps.test.outcome == 'failure'
+#         run: |
+#           echo "Step conclusion: ${{ steps.test.conclusion }}"
+#           echo "Step outcome: ${{ steps.test.outcome }}"
 
-      - name: Upload test logs on failure
-        if: failure() && steps.test.outcome == 'failure'
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-logs
-          path: test
+#       - name: Upload test logs on failure
+#         if: failure() && steps.test.outcome == 'failure'
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: test-logs
+#           path: test
