@@ -40,6 +40,7 @@ jobs:
         run: |
           echo "Step conclusion: ${{ steps.test.conclusion }}"
           echo "Step outcome: ${{ steps.test.outcome }}"
+          echo "status ${{ steps.test.outputs.status }}"
 
       - name: Upload test logs on failure
         if: failure() && steps.test.outcome == 'failure'
@@ -47,9 +48,6 @@ jobs:
         with:
           name: test-logs #다운로드가능한 아티팩트 이름
           path: dist
-        run: |
-          echo ${{ steps.test.outputs.status }}
-          echo ${{ steps.test.outcome }}
 
   deploy:
     needs: test
