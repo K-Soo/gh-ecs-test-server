@@ -13,8 +13,8 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      # - name: Install pnpm
+      #   run: npm install -g pnpm
 
       # 4. Check PNPM installation path
       - name: Debug PNPM installation path
@@ -27,13 +27,11 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.pnpm-store #지정된 디렉토리를 캐시합니다.
+          path: ~/.npm #지정된 디렉토리를 캐시합니다.
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm ci
 
       # - name: Run tests
       #   run: |
