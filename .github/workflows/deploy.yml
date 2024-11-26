@@ -19,25 +19,15 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
-          # path: ~/.pnpm-store # PNPM의 기본 캐시 디렉토리
-          path: /home/runner/.local/share/pnpm/store/v3
+          path: ~/.pnpm-store # PNPM의 기본 캐시 디렉토리
+          # path: /home/runner/.local/share/pnpm/store/v3
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Install dependencies
-        run: pnpm install
-
-      # 4. Check PNPM installation path
-      - name: Debug PNPM installation path
         run: |
+          pnpm install
           echo "PNPM cache path:"
           pnpm store path
-
-      - name: Debug PNPM cache directory
-        run: |
-          echo "PNPM store path:"
-          pnpm store path
-          echo "Contents of PNPM cache directory:"
-          ls -al /home/runner/.local/share/pnpm/store/v3
 
       # - name: Run tests
       #   run: |
@@ -66,7 +56,8 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
-          path: /home/runner/.local/share/pnpm/store/v3
+          # path: /home/runner/.local/share/pnpm/store/v3
+          path: ~/.pnpm-store # PNPM의 기본 캐시 디렉토리
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Install dependencies
