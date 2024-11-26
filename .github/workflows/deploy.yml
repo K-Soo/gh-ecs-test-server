@@ -13,25 +13,23 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v4
 
-      # - name: Install pnpm
-      #   run: npm install -g pnpm
-
-      # 4. Check PNPM installation path
-      # - name: Debug PNPM installation path
-      #   run: |
-      #     echo "PNPM version:"
-      #     pnpm --version
-      #     echo "PNPM installation path:"
-      #     which pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.npm #지정된 디렉토리를 캐시합니다.
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('package-lock.json') }}
+          path: ~/.pnpm-store # PNPM의 기본 캐시 디렉토리
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
+
+      # 4. Check PNPM installation path
+      - name: Debug PNPM installation path
+        run: |
+          echo "PNPM cache path:"
+          pnpm store path
 
       # - name: Run tests
       #   run: |
@@ -40,12 +38,12 @@ jobs:
       # outputs:
       # status: ${{ steps.test.outputs.status }}
 
-      - name: Upload test logs on failure
-        # if: failure() # 이전 단계에서 실패했을 경우에만 실행
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-logs #다운로드가능한 아티팩트 이름
-          path: dist
+      # - name: Upload test logs on failure
+      #   # if: failure() # 이전 단계에서 실패했을 경우에만 실행
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: test-logs #다운로드가능한 아티팩트 이름
+      #     path: dist
 
   deploy:
     needs: test
