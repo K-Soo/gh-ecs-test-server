@@ -6,12 +6,12 @@ on:
     # paths-ignore:
     # - '.github/workflows/*' #워크플로우가 수정되면 액션이 실행안됨
 env:
-  GLOBAL_ENV: global
+  GLOBAL_ENV: 글로벌값이다
 
 jobs:
   test:
     env:
-      TEST_ENV: test
+      TEST_ENV: 테스트값이다
     runs-on: ubuntu-latest
     steps:
       - name: env output
