@@ -31,26 +31,25 @@ jobs:
       - name: Run tests
         id: test
         run: pnpm test
+        outputs:
+          status: ${{ steps.test.outputs.status }}
         # continue-on-error: true
 
       - name: Check test status
-        if: failure()
+        if: failure() && steps.test.outcome == 'failure'
         run: |
           echo "Step conclusion: ${{ steps.test.conclusion }}"
           echo "Step outcome: ${{ steps.test.outcome }}"
 
-        # outputs:
-        #   status: ${{ steps.test.outputs.status }}
-
-      # - name: Upload test logs on failure
-      #   if: steps.test.outcome == 'failure'
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: test-logs #다운로드가능한 아티팩트 이름
-      #     path: dist
-      #   run: |
-      #     echo ${{ steps.test.outputs.status }}
-      #     echo ${{ steps.test.outcome }}
+      - name: Upload test logs on failure
+        if: failure() && steps.test.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs #다운로드가능한 아티팩트 이름
+          path: dist
+        run: |
+          echo ${{ steps.test.outputs.status }}
+          echo ${{ steps.test.outcome }}
 
   deploy:
     needs: test
