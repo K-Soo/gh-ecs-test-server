@@ -35,8 +35,9 @@ jobs:
 
       - name: Check test status
         if: always()
-        run: echo "Step conclusion: ${{ steps.test.conclusion }}"
-   
+        run: |
+          echo "Step conclusion: ${{ steps.test.conclusion }}"
+
         # outputs:
         #   status: ${{ steps.test.outputs.status }}
 
