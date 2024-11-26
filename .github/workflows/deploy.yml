@@ -31,7 +31,7 @@ jobs:
       - name: Run tests
         id: test
         run: pnpm test
-        continue-on-error: true
+        # continue-on-error: true
 
       - name: Check test status
         if: ${{ steps.test.outcome == 'failure' }}
