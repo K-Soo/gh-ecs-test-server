@@ -20,7 +20,7 @@ jobs:
           echo "Global env: $GLOBAL_ENV"
           echo "test env: ${{ env.TEST_ENV }}"
           echo "test env: $TEST_ENV"
-          echo "local env: ${{ secret.LOCAL }}"
+          echo "local env: ${{ env.LOCAL }}"
 
       - name: Get Code
         uses: actions/checkout@v4
