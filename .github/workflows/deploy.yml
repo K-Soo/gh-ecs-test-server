@@ -24,14 +24,14 @@ jobs:
           echo "PNPM installation path:"
           which pnpm
 
+      - name: Install dependencies
+        run: pnpm install
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
           path: ~/.pnpm-store #지정된 디렉토리를 캐시합니다.
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
-
-      - name: Install dependencies
-        run: pnpm install
 
       # - name: Run tests
       #   run: |
