@@ -30,8 +30,8 @@ jobs:
 
       - name: Run tests
         id: test
-        run: |
-          pnpm test
+        run: pnpm test
+        run: echo "Step conclusion: ${{ steps.example_step.conclusion }}"
         # continue-on-error: true
         # outputs:
         #   status: ${{ steps.test.outputs.status }}
@@ -42,6 +42,9 @@ jobs:
         with:
           name: test-logs #다운로드가능한 아티팩트 이름
           path: dist
+        run: |
+          echo ${{ steps.test.outputs.status }}
+          echo ${{ steps.test.outcome }}
 
   deploy:
     needs: test
