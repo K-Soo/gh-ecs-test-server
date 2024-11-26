@@ -32,7 +32,7 @@ jobs:
         id: test
         run: pnpm test
         run: |
-        echo "Step conclusion: ${{ steps.example_step.conclusion }}
+        echo "Step conclusion: ${{ steps.example_step.conclusion }}"
         # continue-on-error: true
         # outputs:
         #   status: ${{ steps.test.outputs.status }}
