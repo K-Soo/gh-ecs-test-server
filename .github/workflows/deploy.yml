@@ -5,13 +5,21 @@ on:
       - main
     # paths-ignore:
     # - '.github/workflows/*' #워크플로우가 수정되면 액션이 실행안됨
+env:
+  GLOBAL_ENV: global
 
 jobs:
   test:
+    env:
+      TEST_ENV: test
     runs-on: ubuntu-latest
-    outputs:
-      status: ${{ steps.test.outputs.status }} #outputs는 Job의 결과를 외부로 전달하기 위해 사용되며, Step 간에는 단순히 ${{ steps.<step_id>.<value> }} 형식으로 값을 공유할 수 있습니다.
     steps:
+      - name: env output
+        run: |
+          echo "Global env: $GLOBAL_ENV"
+          echo "test env: ${{ env.TEST_ENV }}"
+          echo "test env: $TEST_ENV"
+
       - name: Get Code
         uses: actions/checkout@v4
 
@@ -52,8 +60,6 @@ jobs:
 
   deploy:
     needs: test
-    env:
-      URL: asdasd
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
