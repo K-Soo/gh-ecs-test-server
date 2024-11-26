@@ -34,9 +34,10 @@ jobs:
         continue-on-error: true
 
       - name: Check test status
-        if: always()
+        if: ${{ steps.test.outcome == 'failure' }}
         run: |
           echo "Step conclusion: ${{ steps.test.conclusion }}"
+          echo "Step outcome: ${{ steps.test.outcome }}"
 
         # outputs:
         #   status: ${{ steps.test.outputs.status }}
