@@ -32,6 +32,13 @@ jobs:
           echo "PNPM cache path:"
           pnpm store path
 
+      - name: Debug PNPM cache directory
+        run: |
+          echo "PNPM store path:"
+          pnpm store path
+          echo "Contents of PNPM cache directory:"
+          ls -al /home/runner/.local/share/pnpm/store/v3
+
       # - name: Run tests
       #   run: |
       #     pnpm test
@@ -59,7 +66,7 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.pnpm-store #지정된 디렉토리를 캐시합니다.
+          path: /home/runner/.local/share/pnpm/store/v3
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Install dependencies
