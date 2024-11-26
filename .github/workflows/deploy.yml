@@ -26,8 +26,8 @@ jobs:
       - name: Get branch name
         id: branch
         run: |
+          echo "The GITHUB_REF is: $GITHUB_REF"
           echo "stage=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-          echo "branch name: ${{ steps.branch.outputs.stage }}"
 
       - name: Get Code
         uses: actions/checkout@v4
