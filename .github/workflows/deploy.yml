@@ -10,9 +10,6 @@ on:
       - '**.md'
 
 env:
-  # ECS_SERVICE: MY_ECS_SERVICE # set this to your Amazon ECS service name
-  # ECS_CLUSTER: MY_ECS_CLUSTER # set this to your Amazon ECS cluster name
-
   ECS_TASK_DEFINITION: ./aws/task-definition/production.json
   CONTAINER_NAME: ecs-test-server
 
@@ -80,19 +77,22 @@ jobs:
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
 
-      - name: Debug task definition output
+      - name: Debug new task definition output
         run: echo ${{ steps.task-def.outputs.task-definition }}
 
-      - name: Upload test logs on failure
+      - name: Upload new task definition
         uses: actions/upload-artifact@v4
         with:
-          name: update-task
+          name: new-task-definition
           path: ${{ steps.task-def.outputs.task-definition }}
 
-      # - name: Deploy Amazon ECS task definition
-      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      #   with:
-      #     task-definition: ${{ steps.task-def.outputs.task-definition }}
-      #     service: ${{ env.ECS_SERVICE }}
-      #     cluster: ${{ env.ECS_CLUSTER }}
-      #     wait-for-service-stability: true
+      - name: Deploy Amazon ECS task definition
+        env:
+          ECS_SERVICE: ${{ secrets.ECS_SERVICE }}
+          ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
