@@ -74,7 +74,6 @@ jobs:
         with:
           name: test-logs #다운로드가능한 아티팩트 이름
           path: test
-
   deploy:
     needs: test
     runs-on: ubuntu-latest
