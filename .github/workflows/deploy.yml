@@ -8,15 +8,15 @@ on:
     # - '.github/workflows/*' #워크플로우가 수정되면 액션이 실행안됨
 
 env:
-  # ECS_SERVICE: MY_ECS_SERVICE # set this to your Amazon ECS service name
-  # ECS_CLUSTER: MY_ECS_CLUSTER # set this to your Amazon ECS cluster name
+  ECS_SERVICE: MY_ECS_SERVICE # set this to your Amazon ECS service name
+  ECS_CLUSTER: MY_ECS_CLUSTER # set this to your Amazon ECS cluster name
 
-  # ECS_TASK_DEFINITION:
-  #   MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-  #   # file, e.g. .aws/task-definition.json
-  # CONTAINER_NAME:
-  #   MY_CONTAINER_NAME # set this to the name of the container in the
-  #   # containerDefinitions section of your task definition
+  ECS_TASK_DEFINITION:
+    MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
+    # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME:
+    MY_CONTAINER_NAME # set this to the name of the container in the
+    # containerDefinitions section of your task definition
 
 permissions:
   contents: read
